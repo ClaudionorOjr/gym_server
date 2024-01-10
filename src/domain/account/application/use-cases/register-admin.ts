@@ -3,6 +3,7 @@ import { Admin } from '../../enterprise/entities/admin'
 import { AdminsRepository } from '../repositories/admins-repository'
 import { Hasher } from '@account/cryptography/hasher'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
+import { inject, injectable } from 'tsyringe'
 
 interface RegisterAdminUseCaseRequest {
   completeName: string
@@ -13,9 +14,12 @@ interface RegisterAdminUseCaseRequest {
 
 type RegisterAdminUseCaseResponse = Either<UserAlreadyExistsError, object>
 
+@injectable()
 export class RegisterAdminUseCase {
   constructor(
+    @inject('AdminsRepository')
     private adminsRepository: AdminsRepository,
+    @inject('Hasher')
     private hasher: Hasher,
   ) {}
 

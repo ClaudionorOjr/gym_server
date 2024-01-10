@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  gym-server-pg:
+    container_name: gym-server
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/pg:/data/postgres

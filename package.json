@@ -7,6 +7,8 @@
   "scripts": {
     "test": "vitest run --dir src/domain",
     "test:watch": "vitest --dir src/domain",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
+    "test:e2e:watch": "vitest --config ./vitest.config.e2e.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
@@ -17,17 +19,28 @@
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@rocketseat/eslint-config": "^2.1.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.10.6",
+    "@types/supertest": "^6.0.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
+    "prisma": "^5.7.1",
+    "supertest": "^6.3.3",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vite-tsconfig-paths": "^4.2.3",
     "vitest": "^1.1.1"
   },
   "dependencies": {
-    "dayjs": "^1.11.10"
+    "@prisma/client": "^5.7.1",
+    "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.25.2",
+    "reflect-metadata": "^0.2.1",
+    "tsyringe": "^4.8.0",
+    "zod": "^3.22.4"
   },
   "config": {
     "commitizen": {
