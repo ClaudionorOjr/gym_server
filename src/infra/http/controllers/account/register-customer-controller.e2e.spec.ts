@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 import { FastifyInstance } from 'fastify'
-import { PrismaService } from 'src/infra/database/prisma'
+import { PrismaService } from '@infra/database/prisma'
 import { AdminFactory } from 'test/factories/make-admin'
 import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
 import request from 'supertest'
 
-describe('Register admin (e2e)', () => {
+describe('Register customer (e2e)', () => {
   let app: FastifyInstance
   let prisma: PrismaService
   let adminFactory: AdminFactory
@@ -24,29 +24,30 @@ describe('Register admin (e2e)', () => {
     await app.close()
   })
 
-  test('[POST] admin/register', async () => {
+  test('[POST] /customer/register', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 
     const response = await request(app.server)
-      .post('/admin/register')
+      .post('/customer/register')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         completeName: 'John Doe',
         email: 'johndoe@example.com',
-        password: '123456',
         phone: '(00) 98765-4321',
+        birthdate: '01/03/1990',
       })
 
     expect(response.statusCode).toEqual(201)
 
-    const adminOnDatabase = await prisma.admin.findUnique({
+    const customerOnDatabase = await prisma.customer.findUnique({
       where: {
         email: 'johndoe@example.com',
       },
     })
 
-    expect(adminOnDatabase).toBeTruthy()
+    console.log(customerOnDatabase)
+    expect(customerOnDatabase).toBeTruthy()
   })
 })

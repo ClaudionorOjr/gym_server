@@ -1,8 +1,8 @@
+import { randomUUID } from 'node:crypto'
 import {
   Measurements,
   MeasurementsProps,
-} from 'src/domain/training/enterprise/entities/measurements'
-import { randomUUID } from 'node:crypto'
+} from '@workout/enterprise/entities/measurements'
 
 export function makeMeasurements(
   override?: Partial<MeasurementsProps>,

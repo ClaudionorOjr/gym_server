@@ -7,6 +7,8 @@ const envSchema = z.object({
   DATABASE_PASSWORD: z.string(),
   DATABASE_DB: z.string(),
   COMPOSE_PROJECT_NAME: z.string().optional(),
+  JWT_PRIVATE_KEY: z.string(),
+  JWT_PUBLIC_KEY: z.string(),
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),

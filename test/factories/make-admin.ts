@@ -1,5 +1,7 @@
 import { Admin, AdminProps } from '@account/enterprise/entities/admin'
 import { faker } from '@faker-js/faker'
+import { PrismaClient } from '@prisma/client'
+import { PrismaAdminMapper } from '@infra/database/prisma/mappers/prisma-admin-mapper'
 
 export function makeAdmin(override?: Partial<AdminProps>, id?: string): Admin {
   return Admin.create(
@@ -12,4 +14,21 @@ export function makeAdmin(override?: Partial<AdminProps>, id?: string): Admin {
     },
     id,
   )
+}
+
+export class AdminFactory {
+  constructor(private prisma: PrismaClient) {}
+
+  async makePrismaAdmin(
+    data: Partial<AdminProps> = {},
+    id?: string,
+  ): Promise<Admin> {
+    const admin = makeAdmin(data, id)
+
+    await this.prisma.admin.create({
+      data: PrismaAdminMapper.toPrisma(admin),
+    })
+
+    return admin
+  }
 }

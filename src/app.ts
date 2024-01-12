@@ -1,11 +1,28 @@
 import 'reflect-metadata'
-import fastify from 'fastify'
-import { routes } from './infra/http/routes'
-import { ZodError } from 'zod'
-import { env } from './infra/env'
 import '@infra/container'
+import fastify from 'fastify'
+import fastifyJwt from '@fastify/jwt'
+
+import { routes } from './infra/http/routes'
+import { env } from './infra/env'
+
+import { ZodError } from 'zod'
 
 export const app = fastify()
+
+const privateKey = env.JWT_PRIVATE_KEY
+const publicKey = env.JWT_PUBLIC_KEY
+
+// TODO: terminar as configurações do JWT, como cookies, expiração...
+app.register(fastifyJwt, {
+  secret: {
+    private: Buffer.from(privateKey, 'base64'),
+    public: Buffer.from(publicKey, 'base64'),
+  },
+  sign: {
+    algorithm: 'RS256',
+  },
+})
 
 /* ROUTES */
 app.register(routes)

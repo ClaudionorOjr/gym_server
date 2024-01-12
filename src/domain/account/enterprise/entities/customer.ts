@@ -8,6 +8,7 @@ export interface CustomerProps {
   phone: string
   birthdate: Date
   registeredBy: string
+  paymentDay: string
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -54,6 +55,14 @@ export class Customer extends Entity<CustomerProps> {
     return this.props.registeredBy
   }
 
+  get paymentDay() {
+    return this.props.paymentDay
+  }
+
+  set paymentDay(paymentDay: string) {
+    this.props.paymentDay = paymentDay
+  }
+
   get createdAt() {
     return this.props.createdAt
   }
@@ -71,11 +80,15 @@ export class Customer extends Entity<CustomerProps> {
     return dayjs().diff(this.props.birthdate, 'years')
   }
 
-  static create(props: Optional<CustomerProps, 'createdAt'>, id?: string) {
+  static create(
+    props: Optional<CustomerProps, 'createdAt' | 'paymentDay'>,
+    id?: string,
+  ) {
     const customer = new Customer(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        paymentDay: props.paymentDay ?? new Date().getDate().toString(),
       },
       id,
     )

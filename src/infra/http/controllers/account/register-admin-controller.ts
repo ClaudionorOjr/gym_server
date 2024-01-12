@@ -19,6 +19,7 @@ export async function registerAdmin(
 
   const { completeName, email, password, phone } =
     registerAdminBodySchema.parse(request.body)
+
   try {
     const registerAdminUseCase = container.resolve(RegisterAdminUseCase)
 

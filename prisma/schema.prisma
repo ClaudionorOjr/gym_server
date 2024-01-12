@@ -21,3 +21,17 @@ model Admin {
 
   @@map("admins")
 }
+
+model Customer {
+  id           String    @id @default(uuid())
+  completeName String    @map("complete_name")
+  email        String    @unique
+  phone        String
+  birthdate    DateTime
+  registeredBy String    @map("registered_by")
+  paymentDay   String    @map("payment_day")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @updatedAt @map("updated_at")
+
+  @@map("customers")
+}

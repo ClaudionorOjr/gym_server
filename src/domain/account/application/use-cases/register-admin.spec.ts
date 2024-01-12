@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryAdminsRepository } from 'test/repositories/in-memory-admins-repository'
 import { RegisterAdminUseCase } from './register-admin'
 import { FakeHasher } from 'test/cryptography/fake-hasher'

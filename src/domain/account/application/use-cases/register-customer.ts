@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Customer } from '@account/enterprise/entities/customer'
 import { CustomersRepository } from '../repositories/customers-repository'
 import { Either, failure, success } from '@core/either'
@@ -13,8 +14,13 @@ interface RegisterCustomerUseCaseRequest {
 
 type RegisterCustomerUseCaseResponse = Either<UserAlreadyExistsError, object>
 
+@injectable()
 export class RegisterCustomerUseCase {
-  constructor(private customersRepository: CustomersRepository) {}
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: CustomersRepository,
+  ) {}
+
   async execute({
     completeName,
     email,
