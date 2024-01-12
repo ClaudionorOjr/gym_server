@@ -3,6 +3,7 @@ import { AdminsRepository } from '../repositories/admins-repository'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { Hasher } from '@account/cryptography/hasher'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { inject, injectable } from 'tsyringe'
 
 interface ChangePasswordUseCaseRequest {
   adminId: string
@@ -15,9 +16,12 @@ type ChangePasswordUseCaseResponse = Either<
   object
 >
 
+@injectable()
 export class ChangePasswordUseCase {
   constructor(
+    @inject('AdminsRepository')
     private adminsRepository: AdminsRepository,
+    @inject('Hasher')
     private hasher: Hasher,
   ) {}
 

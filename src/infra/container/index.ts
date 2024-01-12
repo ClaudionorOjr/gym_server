@@ -11,10 +11,14 @@ import { PrismaAdminsRepository } from '../database/prisma/repositories/prisma-a
 
 import { CustomersRepository } from '@account/application/repositories/customers-repository'
 import { PrismaCustomersRepository } from '@infra/database/prisma/repositories/prisma-customers-repository'
+import { Encrypter } from '@account/cryptography/encrypter'
+import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
 
 container.registerSingleton<DatabaseProvider>('Prisma', PrismaService)
 
 container.registerSingleton<Hasher>('Hasher', BcryptHasher)
+
+container.registerSingleton<Encrypter>('Encrypter', JwtEncrypter)
 
 container.registerSingleton<AdminsRepository>(
   'AdminsRepository',

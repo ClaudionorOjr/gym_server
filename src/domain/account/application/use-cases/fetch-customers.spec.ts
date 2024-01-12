@@ -1,14 +1,14 @@
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers-repository'
-import { FetchCustomerUseCase } from './fetch-customers'
+import { FetchCustomersUseCase } from './fetch-customers'
 import { makeCustomer } from 'test/factories/make-customer'
 
 let customersRepository: InMemoryCustomersRepository
-let sut: FetchCustomerUseCase
+let sut: FetchCustomersUseCase
 
 describe('Fetch customers use case', () => {
   beforeEach(() => {
     customersRepository = new InMemoryCustomersRepository()
-    sut = new FetchCustomerUseCase(customersRepository)
+    sut = new FetchCustomersUseCase(customersRepository)
   })
 
   it('should be able to fetch all customers', async () => {

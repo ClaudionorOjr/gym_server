@@ -5,7 +5,7 @@ import { AdminFactory } from 'test/factories/make-admin'
 import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
 import request from 'supertest'
 
-describe('Register customer (e2e)', () => {
+describe('Edit admin (e2e)', () => {
   let app: FastifyInstance
   let prisma: PrismaService
   let adminFactory: AdminFactory
@@ -14,8 +14,8 @@ describe('Register customer (e2e)', () => {
   beforeAll(async () => {
     app = (await import('src/app')).app
     prisma = new PrismaService()
-    jwtEncrypter = new JwtEncrypter()
     adminFactory = new AdminFactory(prisma)
+    jwtEncrypter = new JwtEncrypter()
 
     await app.ready()
   })
@@ -24,29 +24,27 @@ describe('Register customer (e2e)', () => {
     await app.close()
   })
 
-  test('[POST] /customer/register', async () => {
+  test('[PUT] /admin/:adminId', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 
     const response = await request(app.server)
-      .post('/customer/register')
+      .put(`/admin/${admin.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         completeName: 'John Doe',
         email: 'johndoe@example.com',
-        phone: '(00) 98765-4321',
-        birthdate: '01/03/1990',
+        phone: '(00) 99999-9999',
       })
 
-    expect(response.statusCode).toEqual(201)
+    expect(response.statusCode).toEqual(204)
 
-    const customerOnDatabase = await prisma.customer.findUnique({
-      where: {
-        email: 'johndoe@example.com',
-      },
+    const updatedAdmin = await prisma.admin.findUnique({
+      where: { id: admin.id },
     })
 
-    expect(customerOnDatabase).toBeTruthy()
+    console.log(updatedAdmin)
+    expect(updatedAdmin).toBeTruthy()
   })
 })

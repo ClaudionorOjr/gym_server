@@ -1,21 +1,24 @@
 import 'reflect-metadata'
-import { FastifyInstance } from 'fastify'
 import { PrismaService } from '@infra/database/prisma'
-import { AdminFactory } from 'test/factories/make-admin'
+import { FastifyInstance } from 'fastify'
+import { CustomerFactory } from 'test/factories/make-customer'
 import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
+import { AdminFactory } from 'test/factories/make-admin'
 import request from 'supertest'
 
-describe('Register customer (e2e)', () => {
+describe('Edit customer (e2e)', () => {
   let app: FastifyInstance
   let prisma: PrismaService
+  let customerFactory: CustomerFactory
   let adminFactory: AdminFactory
   let jwtEncrypter: JwtEncrypter
 
   beforeAll(async () => {
     app = (await import('src/app')).app
     prisma = new PrismaService()
-    jwtEncrypter = new JwtEncrypter()
+    customerFactory = new CustomerFactory(prisma)
     adminFactory = new AdminFactory(prisma)
+    jwtEncrypter = new JwtEncrypter()
 
     await app.ready()
   })
@@ -24,29 +27,32 @@ describe('Register customer (e2e)', () => {
     await app.close()
   })
 
-  test('[POST] /customer/register', async () => {
+  test('[PUT] /customer/:customerId', async () => {
+    const customer = await customerFactory.makePrismaCustomer()
     const admin = await adminFactory.makePrismaAdmin()
 
     const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 
     const response = await request(app.server)
-      .post('/customer/register')
+      .put(`/customer/${customer.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         completeName: 'John Doe',
         email: 'johndoe@example.com',
-        phone: '(00) 98765-4321',
-        birthdate: '01/03/1990',
+        phone: '(00) 987654321',
+        birthdate: '02/05/1995',
+        paymentDay: '06',
       })
 
-    expect(response.statusCode).toEqual(201)
+    expect(response.statusCode).toEqual(204)
 
-    const customerOnDatabase = await prisma.customer.findUnique({
+    const updatedCustomer = await prisma.customer.findUnique({
       where: {
-        email: 'johndoe@example.com',
+        id: customer.id,
       },
     })
 
-    expect(customerOnDatabase).toBeTruthy()
+    console.log(updatedCustomer)
+    expect(updatedCustomer).toBeTruthy()
   })
 })

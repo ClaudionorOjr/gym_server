@@ -1,6 +1,7 @@
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { AdminsRepository } from '../repositories/admins-repository'
 import { Either, failure, success } from '@core/either'
+import { inject, injectable } from 'tsyringe'
 
 interface EditAdminUseCaseRequest {
   adminId: string
@@ -11,8 +12,11 @@ interface EditAdminUseCaseRequest {
 
 type EditAdminUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@injectable()
 export class EditAdminUseCase {
-  constructor(private adminsRepository: AdminsRepository) {}
+  constructor(
+    @inject('AdminsRepository') private adminsRepository: AdminsRepository,
+  ) {}
 
   async execute({
     adminId,

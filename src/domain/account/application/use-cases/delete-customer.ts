@@ -1,6 +1,7 @@
 import { Either, failure, success } from '@core/either'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { CustomersRepository } from '../repositories/customers-repository'
+import { inject, injectable } from 'tsyringe'
 
 interface DeleteCustomerUseCaseRequest {
   customerId: string
@@ -8,8 +9,12 @@ interface DeleteCustomerUseCaseRequest {
 
 type DeleteCustomerUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@injectable()
 export class DeleteCustomerUseCase {
-  constructor(private customersRepository: CustomersRepository) {}
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: CustomersRepository,
+  ) {}
 
   async execute({
     customerId,

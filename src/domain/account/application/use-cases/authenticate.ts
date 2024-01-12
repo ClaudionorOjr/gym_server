@@ -3,6 +3,7 @@ import { AdminsRepository } from '../repositories/admins-repository'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { Hasher } from '@account/cryptography/hasher'
 import { Encrypter } from '@account/cryptography/encrypter'
+import { inject, injectable } from 'tsyringe'
 
 interface AuthenticateUseCaseRequest {
   email: string
@@ -16,10 +17,14 @@ type AuthenticateUseCaseResponse = Either<
   }
 >
 
+@injectable()
 export class AuthenticateUseCase {
   constructor(
+    @inject('AdminsRepository')
     private adminsRepository: AdminsRepository,
+    @inject('Hasher')
     private hasher: Hasher,
+    @inject('Encrypter')
     private encrypter: Encrypter,
   ) {}
 

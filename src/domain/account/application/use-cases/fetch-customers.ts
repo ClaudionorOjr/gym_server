@@ -1,18 +1,23 @@
 import { Customer } from '@account/enterprise/entities/customer'
 import { Either, success } from '@core/either'
 import { CustomersRepository } from '../repositories/customers-repository'
+import { inject, injectable } from 'tsyringe'
 
-type FetchCustomerUseCaseResponse = Either<
+type FetchCustomersUseCaseResponse = Either<
   null,
   {
     customers: Customer[]
   }
 >
 
-export class FetchCustomerUseCase {
-  constructor(private customersRepository: CustomersRepository) {}
+@injectable()
+export class FetchCustomersUseCase {
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: CustomersRepository,
+  ) {}
 
-  async execute(): Promise<FetchCustomerUseCaseResponse> {
+  async execute(): Promise<FetchCustomersUseCaseResponse> {
     const customers = await this.customersRepository.findMany()
 
     return success({ customers })
