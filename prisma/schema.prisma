@@ -33,5 +33,24 @@ model Customer {
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime? @updatedAt @map("updated_at")
 
+  measurements Measurements[]
+
   @@map("customers")
+}
+
+model Measurements {
+  id                  String   @id @default(uuid())
+  customerId          String   @map("customer_id")
+  bust                Decimal
+  bicep               Decimal
+  forearm             Decimal
+  waist               Decimal
+  hips                Decimal
+  thigh               Decimal
+  calf                Decimal
+  measurementsTakenAt DateTime @map("measurements_taken_at")
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("measurements")
 }

@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryMeasurementsRepository } from 'test/repositories/in-memory-measurements-repository'
 import { FetchMeasurementsUseCase } from './fetch-measurements'
 import { makeMeasurements } from 'test/factories/make-measurements'

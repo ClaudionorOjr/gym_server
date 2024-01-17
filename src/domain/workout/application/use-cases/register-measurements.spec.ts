@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { makeCustomer } from 'test/factories/make-customer'
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers-repository'

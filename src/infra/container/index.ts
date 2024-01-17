@@ -6,13 +6,17 @@ import { PrismaService } from '../database/prisma'
 import { Hasher } from '@account/cryptography/hasher'
 import { BcryptHasher } from '../cryptography/bcrypt-hasher'
 
+import { Encrypter } from '@account/cryptography/encrypter'
+import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
+
 import { AdminsRepository } from '@account/application/repositories/admins-repository'
 import { PrismaAdminsRepository } from '../database/prisma/repositories/prisma-admins-repository'
 
 import { CustomersRepository } from '@account/application/repositories/customers-repository'
 import { PrismaCustomersRepository } from '@infra/database/prisma/repositories/prisma-customers-repository'
-import { Encrypter } from '@account/cryptography/encrypter'
-import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
+
+import { MeasurementsRepository } from '@workout/application/repositories/measurements-repository'
+import { PrismaMeasurementsRepository } from '@infra/database/prisma/repositories/prisma-measurements-repository'
 
 container.registerSingleton<DatabaseProvider>('Prisma', PrismaService)
 
@@ -28,4 +32,9 @@ container.registerSingleton<AdminsRepository>(
 container.registerSingleton<CustomersRepository>(
   'CustomersRepository',
   PrismaCustomersRepository,
+)
+
+container.registerSingleton<MeasurementsRepository>(
+  'MeasurementsRepository',
+  PrismaMeasurementsRepository,
 )

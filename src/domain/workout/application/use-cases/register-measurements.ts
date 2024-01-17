@@ -3,6 +3,7 @@ import { MeasurementsRepository } from '../repositories/measurements-repository'
 import { Measurements } from '../../enterprise/entities/measurements'
 import { Either, failure, success } from '@core/either'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
+import { inject, injectable } from 'tsyringe'
 
 interface RegisterMeasurementsUseCaseRequest {
   customerId: string
@@ -17,9 +18,12 @@ interface RegisterMeasurementsUseCaseRequest {
 
 type RegisterMeasurementsUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@injectable()
 export class RegisterMeasurementsUseCase {
   constructor(
+    @inject('CustomersRepository')
     private customersRepository: CustomersRepository,
+    @inject('MeasurementsRepository')
     private measurementsRepository: MeasurementsRepository,
   ) {}
 

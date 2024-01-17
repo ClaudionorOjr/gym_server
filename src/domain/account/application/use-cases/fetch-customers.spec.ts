@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers-repository'
 import { FetchCustomersUseCase } from './fetch-customers'
 import { makeCustomer } from 'test/factories/make-customer'

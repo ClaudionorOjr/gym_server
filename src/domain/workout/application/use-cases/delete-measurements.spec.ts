@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryMeasurementsRepository } from 'test/repositories/in-memory-measurements-repository'
 import { DeleteMeasurementsUseCase } from './delete-measurements'
 import { makeMeasurements } from 'test/factories/make-measurements'
@@ -16,7 +17,7 @@ describe('Delete measurements use case', () => {
     await measurementsRepository.create(makeMeasurements({}, 'measurements-01'))
 
     const result = await sut.execute({
-      measurementId: 'measurements-01',
+      measurementsId: 'measurements-01',
     })
 
     expect(result.isSuccess()).toBe(true)
@@ -25,7 +26,7 @@ describe('Delete measurements use case', () => {
 
   it('should not be able to delete non existing measurements', async () => {
     const result = await sut.execute({
-      measurementId: 'measurements-01',
+      measurementsId: 'measurements-01',
     })
 
     expect(result.isFailure()).toBe(true)

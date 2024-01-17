@@ -3,6 +3,8 @@ import {
   Measurements,
   MeasurementsProps,
 } from '@workout/enterprise/entities/measurements'
+import { PrismaMeasurementsMapper } from '@infra/database/prisma/mappers/prisma-measurements-mapper'
+import { PrismaClient } from '@prisma/client'
 
 export function makeMeasurements(
   override?: Partial<MeasurementsProps>,
@@ -22,4 +24,21 @@ export function makeMeasurements(
     },
     id,
   )
+}
+
+export class MeasurementsFactory {
+  constructor(private prisma: PrismaClient) {}
+
+  async makePrismaMeasurements(
+    data: Partial<MeasurementsProps> = {},
+    id?: string,
+  ) {
+    const measurements = makeMeasurements(data, id)
+
+    await this.prisma.measurements.create({
+      data: PrismaMeasurementsMapper.toPrisma(measurements),
+    })
+
+    return measurements
+  }
 }

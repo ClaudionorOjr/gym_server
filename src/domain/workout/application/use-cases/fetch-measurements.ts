@@ -1,6 +1,7 @@
 import { Either, success } from '@core/either'
 import { Measurements } from '../../enterprise/entities/measurements'
 import { MeasurementsRepository } from '../repositories/measurements-repository'
+import { inject, injectable } from 'tsyringe'
 
 interface FetchMeasurementsUseCaseRequest {
   customerId: string
@@ -11,8 +12,12 @@ type FetchMeasurementsUseCaseResponse = Either<
   { measurements: Measurements[] }
 >
 
+@injectable()
 export class FetchMeasurementsUseCase {
-  constructor(private measurementsRepository: MeasurementsRepository) {}
+  constructor(
+    @inject('MeasurementsRepository')
+    private measurementsRepository: MeasurementsRepository,
+  ) {}
 
   async execute({
     customerId,

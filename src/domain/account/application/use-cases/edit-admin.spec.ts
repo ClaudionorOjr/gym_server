@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryAdminsRepository } from 'test/repositories/in-memory-admins-repository'
 import { EditAdminUseCase } from './edit-admin'
 import { makeAdmin } from 'test/factories/make-admin'
