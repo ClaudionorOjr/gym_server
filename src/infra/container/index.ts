@@ -4,7 +4,7 @@ import { DatabaseProvider } from '../database/database-provider'
 import { PrismaService } from '../database/prisma'
 
 import { Hasher } from '@account/cryptography/hasher'
-import { BcryptHasher } from '../cryptography/bcrypt-hasher'
+import { BcryptHasher } from '@infra/cryptography/bcrypt-hasher'
 
 import { Encrypter } from '@account/cryptography/encrypter'
 import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
@@ -17,6 +17,11 @@ import { PrismaCustomersRepository } from '@infra/database/prisma/repositories/p
 
 import { MeasurementsRepository } from '@workout/application/repositories/measurements-repository'
 import { PrismaMeasurementsRepository } from '@infra/database/prisma/repositories/prisma-measurements-repository'
+
+import { MailProvider } from '@infra/services/mail/mail-provider'
+import { EtherealService } from '@infra/services/mail/ethereal'
+
+container.registerInstance<MailProvider>('MailProvider', new EtherealService())
 
 container.registerSingleton<DatabaseProvider>('Prisma', PrismaService)
 

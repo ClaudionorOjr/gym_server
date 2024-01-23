@@ -60,6 +60,13 @@ $ npm i @faker-js/faker -D
 $ npm i fastify
 ```
 
+- Handlebars
+
+```sh
+# Template engine
+$ npm i handlebars
+```
+
 - Prisma
 
 ```sh
@@ -77,6 +84,13 @@ $ npx prisma init
 ```sh
 # Realiza as chamadas HTTP dos testes para a aplicação sem a necessidade de colocar a aplicação no ar
 $ npm i supertest @types/supertest -D
+```
+
+- Resend
+
+```sh
+# Lib para envio de e-mails
+$ npm i resend
 ```
 
 - TSyringe
@@ -142,3 +156,7 @@ $ npm i vite-tsconfig-paths -D
 ```sh
 $ npm i zod
 ```
+
+// TODO:
+
+- [ ] Rever a lógica da criação do access token, passando para o controller ao invés de ser criado no caso de uso.
