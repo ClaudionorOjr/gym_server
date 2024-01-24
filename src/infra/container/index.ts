@@ -1,5 +1,7 @@
 import { container } from 'tsyringe'
 
+import './providers/mail-provider/index'
+
 import { DatabaseProvider } from '../database/database-provider'
 import { PrismaService } from '../database/prisma'
 
@@ -17,11 +19,6 @@ import { PrismaCustomersRepository } from '@infra/database/prisma/repositories/p
 
 import { MeasurementsRepository } from '@workout/application/repositories/measurements-repository'
 import { PrismaMeasurementsRepository } from '@infra/database/prisma/repositories/prisma-measurements-repository'
-
-import { MailProvider } from '@infra/services/mail/mail-provider'
-import { EtherealService } from '@infra/services/mail/ethereal'
-
-container.registerInstance<MailProvider>('MailProvider', new EtherealService())
 
 container.registerSingleton<DatabaseProvider>('Prisma', PrismaService)
 

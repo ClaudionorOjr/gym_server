@@ -6,12 +6,12 @@ import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { makeAdmin } from 'test/factories/make-admin'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 
-let adminsRepository: InMemoryAdminsRepository
-let fakeEncrypter: FakeEncrypter
-let fakeHasher: FakeHasher
-let sut: ResetPasswordUseCase
-
 describe('Reset password use case', () => {
+  let adminsRepository: InMemoryAdminsRepository
+  let fakeEncrypter: FakeEncrypter
+  let fakeHasher: FakeHasher
+  let sut: ResetPasswordUseCase
+
   beforeEach(() => {
     adminsRepository = new InMemoryAdminsRepository()
     fakeEncrypter = new FakeEncrypter()

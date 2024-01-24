@@ -1,5 +1,8 @@
 import { injectable } from 'tsyringe'
-import { MailProvider, MailProps } from '../mail-provider'
+import {
+  MailProvider,
+  MailProps,
+} from '../../../container/providers/mail-provider/mail-provider'
 import nodemailer, { Transporter } from 'nodemailer'
 import handlebars from 'handlebars'
 import fs from 'node:fs'

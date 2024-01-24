@@ -25,7 +25,9 @@ describe('Forgot password (e2e)', () => {
   })
 
   test('[POST] /forgot-password', async () => {
-    const admin = await adminFactory.makePrismaAdmin()
+    const admin = await adminFactory.makePrismaAdmin({
+      email: 'claudionorojr@hotmail.com',
+    })
 
     const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 

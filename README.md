@@ -67,6 +67,13 @@ $ npm i fastify
 $ npm i handlebars
 ```
 
+- Nodemailer
+
+```sh
+# Envio de e-mails
+$ npm i nodemailer
+```
+
 - Prisma
 
 ```sh
