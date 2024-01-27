@@ -7,7 +7,7 @@ import { PrismaMeasurementsMapper } from '@infra/database/prisma/mappers/prisma-
 import { PrismaClient } from '@prisma/client'
 
 export function makeMeasurements(
-  override?: Partial<MeasurementsProps>,
+  override: Partial<MeasurementsProps> = {},
   id?: string,
 ) {
   return Measurements.create(

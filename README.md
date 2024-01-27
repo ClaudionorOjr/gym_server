@@ -70,7 +70,7 @@ $ npm i handlebars
 - Nodemailer
 
 ```sh
-# Envio de e-mails
+# Envio de e-mails (Testes)
 $ npm i nodemailer
 ```
 
@@ -96,7 +96,7 @@ $ npm i supertest @types/supertest -D
 - Resend
 
 ```sh
-# Lib para envio de e-mails
+# Lib para envio de e-mails (Produção)
 $ npm i resend
 ```
 
@@ -163,7 +163,3 @@ $ npm i vite-tsconfig-paths -D
 ```sh
 $ npm i zod
 ```
-
-// TODO:
-
-- [ ] Rever a lógica da criação do access token, passando para o controller ao invés de ser criado no caso de uso.

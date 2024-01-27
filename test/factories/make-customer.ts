@@ -6,7 +6,7 @@ import { PrismaCustomerMapper } from '@infra/database/prisma/mappers/prisma-cust
 import { PrismaClient } from '@prisma/client'
 
 export function makeCustomer(
-  override?: Partial<CustomerProps>,
+  override: Partial<CustomerProps> = {},
   id?: string,
 ): Customer {
   return Customer.create(
