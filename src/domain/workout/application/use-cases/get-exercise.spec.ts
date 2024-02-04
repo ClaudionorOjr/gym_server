@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryExercisesRepository } from 'test/repositories/in-memory-exercises-repository'
 import { GetExerciseUseCase } from './get-exercise'
 import { makeExercise } from 'test/factories/make-exercise'

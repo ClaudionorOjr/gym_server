@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryMusculaturesRepository } from 'test/repositories/in-memory-musculatures-repository'
 import { GetMusculatureUseCase } from './get-musculature'
 import { makeMusculature } from 'test/factories/make-musculature'

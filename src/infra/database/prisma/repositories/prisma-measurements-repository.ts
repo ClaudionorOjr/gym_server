@@ -1,7 +1,7 @@
+import { inject, injectable } from 'tsyringe'
+import { PrismaService } from '..'
 import { MeasurementsRepository } from '@workout/application/repositories/measurements-repository'
 import { Measurements } from '@workout/enterprise/entities/measurements'
-import { PrismaService } from '..'
-import { inject, injectable } from 'tsyringe'
 import { PrismaMeasurementsMapper } from '../mappers/prisma-measurements-mapper'
 
 @injectable()

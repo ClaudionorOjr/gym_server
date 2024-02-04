@@ -4,6 +4,7 @@ import { ExercisesRepository } from '../repositories/exercises-repository'
 import { MusculaturesRepository } from '../repositories/musculatures-repository'
 import { ResourceAlreadyExistsError } from '@core/errors/resource-already-exists-error'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
+import { inject, injectable } from 'tsyringe'
 
 interface RegisterExerciseUseCaseRequest {
   name: string
@@ -16,9 +17,12 @@ type RegisterExerciseUseCaseResponse = Either<
   object
 >
 
+@injectable()
 export class RegisterExerciseUseCase {
   constructor(
+    @inject('ExercisesRepository')
     private exercisesRepository: ExercisesRepository,
+    @inject('MusculaturesRepository')
     private musculaturesRepository: MusculaturesRepository,
   ) {}
 

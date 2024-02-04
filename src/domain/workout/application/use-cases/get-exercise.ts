@@ -2,6 +2,7 @@ import { Either, failure, success } from '@core/either'
 import { Exercise } from '@workout/enterprise/entities/exercise'
 import { ExercisesRepository } from '../repositories/exercises-repository'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
+import { inject, injectable } from 'tsyringe'
 
 interface GetExerciseUseCaseRequest {
   exerciseId: string
@@ -14,8 +15,12 @@ type GetExerciseUseCaseResponse = Either<
   }
 >
 
+@injectable()
 export class GetExerciseUseCase {
-  constructor(private exercisesRepository: ExercisesRepository) {}
+  constructor(
+    @inject('ExercisesRepository')
+    private exercisesRepository: ExercisesRepository,
+  ) {}
 
   async execute({
     exerciseId,

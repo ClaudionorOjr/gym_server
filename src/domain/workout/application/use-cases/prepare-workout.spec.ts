@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { makeCustomer } from 'test/factories/make-customer'
 import { makeExercise } from 'test/factories/make-exercise'
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers-repository'

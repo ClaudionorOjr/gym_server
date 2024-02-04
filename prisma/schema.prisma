@@ -34,6 +34,7 @@ model Customer {
   updatedAt    DateTime? @updatedAt @map("updated_at")
 
   measurements Measurements[]
+  Workout      Workout[]
 
   @@map("customers")
 }
@@ -53,4 +54,40 @@ model Measurements {
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@map("measurements")
+}
+
+model Musculature {
+  id   String @id @default(uuid())
+  name String @unique
+
+  exercises Exercise[]
+
+  @@map("msuculatures")
+}
+
+model Exercise {
+  id            String  @id @default(uuid())
+  name          String  @unique
+  musculatureId String  @map("musculature_id")
+  equipment     String?
+
+  musculature Musculature @relation(fields: [musculatureId], references: [id], onDelete: Cascade)
+  workouts    Workout[]
+
+  @@map("exercises")
+}
+
+model Workout {
+  id          String   @id @default(uuid())
+  customerId  String   @map("customer_id")
+  exerciseId  String   @map("exercise_id")
+  series      Decimal
+  repetitions Decimal
+  weight      Decimal?
+  note        String?
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  exercise Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@map("workouts")
 }

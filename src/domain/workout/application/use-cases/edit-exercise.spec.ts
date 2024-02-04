@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryExercisesRepository } from 'test/repositories/in-memory-exercises-repository'
 import { InMemoryMusculaturesRepository } from 'test/repositories/in-memory-musculatures-repository'
 import { EditExerciseUseCase } from './edit-exercise'

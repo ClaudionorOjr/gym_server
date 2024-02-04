@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { makeWorkout } from 'test/factories/make-workout'
 import { InMemoryWorkoutsRepository } from 'test/repositories/in-memory-workouts-repository'

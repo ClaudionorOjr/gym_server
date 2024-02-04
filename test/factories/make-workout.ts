@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker'
+import { PrismaWorkoutMapper } from '@infra/database/prisma/mappers/prisma-workout-mapper'
+import { PrismaClient } from '@prisma/client'
 import { WorkoutProps, Workout } from '@workout/enterprise/entities/workout'
 import { randomUUID } from 'node:crypto'
 
@@ -15,4 +17,17 @@ export function makeWorkout(override: Partial<WorkoutProps> = {}, id?: string) {
     },
     id,
   )
+}
+
+export class WorkoutFactory {
+  constructor(private prisma: PrismaClient) {}
+  async makePrismaWorkout(data: Partial<WorkoutProps> = {}, id?: string) {
+    const workout = makeWorkout(data, id)
+
+    await this.prisma.workout.create({
+      data: PrismaWorkoutMapper.toPrisma(workout),
+    })
+
+    return workout
+  }
 }

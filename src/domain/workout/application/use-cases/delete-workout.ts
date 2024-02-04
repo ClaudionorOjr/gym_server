@@ -1,14 +1,19 @@
 import { Either, failure, success } from '@core/either'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { WorkoutsRepository } from '../repositories/workouts-repository'
+import { inject, injectable } from 'tsyringe'
 
 interface DeleteWorkoutUseCaseRequest {
   workoutId: string
 }
 type DeleteWorkoutUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@injectable()
 export class DeleteWorkoutUseCase {
-  constructor(private workoutsRepository: WorkoutsRepository) {}
+  constructor(
+    @inject('WorkoutsRepository')
+    private workoutsRepository: WorkoutsRepository,
+  ) {}
 
   async execute({
     workoutId,

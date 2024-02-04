@@ -20,6 +20,15 @@ import { PrismaCustomersRepository } from '@infra/database/prisma/repositories/p
 import { MeasurementsRepository } from '@workout/application/repositories/measurements-repository'
 import { PrismaMeasurementsRepository } from '@infra/database/prisma/repositories/prisma-measurements-repository'
 
+import { MusculaturesRepository } from '@workout/application/repositories/musculatures-repository'
+import { PrismaMusculaturesRepository } from '@infra/database/prisma/repositories/prisma-musculatures-repository'
+
+import { ExercisesRepository } from '@workout/application/repositories/exercises-repository'
+import { PrismaExercisesRepository } from '@infra/database/prisma/repositories/prisma-exercises-repository'
+
+import { WorkoutsRepository } from '@workout/application/repositories/workouts-repository'
+import { PrismaWorkoutsRepository } from '@infra/database/prisma/repositories/prisma-workouts-repository'
+
 container.registerSingleton<DatabaseProvider>('Prisma', PrismaService)
 
 container.registerSingleton<Hasher>('Hasher', BcryptHasher)
@@ -39,4 +48,19 @@ container.registerSingleton<CustomersRepository>(
 container.registerSingleton<MeasurementsRepository>(
   'MeasurementsRepository',
   PrismaMeasurementsRepository,
+)
+
+container.registerSingleton<MusculaturesRepository>(
+  'MusculaturesRepository',
+  PrismaMusculaturesRepository,
+)
+
+container.registerSingleton<ExercisesRepository>(
+  'ExercisesRepository',
+  PrismaExercisesRepository,
+)
+
+container.registerSingleton<WorkoutsRepository>(
+  'WorkoutsRepository',
+  PrismaWorkoutsRepository,
 )

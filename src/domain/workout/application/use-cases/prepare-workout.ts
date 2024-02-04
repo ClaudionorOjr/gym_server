@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { Workout } from '@workout/enterprise/entities/workout'
 import { ExercisesRepository } from '../repositories/exercises-repository'
 import { WorkoutsRepository } from '../repositories/workouts-repository'
+import { inject, injectable } from 'tsyringe'
 
 interface PrepareWorkoutUseCaseRequest {
   customerId: string
@@ -15,10 +16,15 @@ interface PrepareWorkoutUseCaseRequest {
 }
 
 type PrepareWorkoutUseCaseResponse = Either<ResourceNotFoundError, object>
+
+@injectable()
 export class PrepareWorkoutUseCase {
   constructor(
+    @inject('WorkoutsRepository')
     private workoutsRepository: WorkoutsRepository,
+    @inject('CustomersRepository')
     private customersRepository: CustomersRepository,
+    @inject('ExercisesRepository')
     private exercisesRepository: ExercisesRepository,
   ) {}
 

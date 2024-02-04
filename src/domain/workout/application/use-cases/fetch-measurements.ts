@@ -12,6 +12,7 @@ type FetchMeasurementsUseCaseResponse = Either<
   { measurements: Measurements[] }
 >
 
+// TODO: FetchMeasurmentsCustomer
 @injectable()
 export class FetchMeasurementsUseCase {
   constructor(

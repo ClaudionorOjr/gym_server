@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers-repository'
 import { InMemoryWorkoutsRepository } from 'test/repositories/in-memory-workouts-repository'
 import { FetchWorkoutsCustomerUseCase } from './fetch-workouts-customer'

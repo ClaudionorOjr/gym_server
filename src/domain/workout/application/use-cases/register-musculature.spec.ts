@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryMusculaturesRepository } from 'test/repositories/in-memory-musculatures-repository'
 import { RegisterMusculatureUseCase } from './register-musculature'
 import { ResourceAlreadyExistsError } from '@core/errors/resource-already-exists-error'

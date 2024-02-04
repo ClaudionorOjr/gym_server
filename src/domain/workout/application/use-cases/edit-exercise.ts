@@ -2,6 +2,7 @@ import { Either, failure, success } from '@core/either'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 import { ExercisesRepository } from '../repositories/exercises-repository'
 import { MusculaturesRepository } from '../repositories/musculatures-repository'
+import { inject, injectable } from 'tsyringe'
 
 interface EditExerciseUseCaseRequest {
   exerciseId: string
@@ -12,9 +13,12 @@ interface EditExerciseUseCaseRequest {
 
 type EditExerciseUseCaseResponse = Either<ResourceNotFoundError, object>
 
+@injectable()
 export class EditExerciseUseCase {
   constructor(
+    @inject('ExercisesRepository')
     private exercisesRepository: ExercisesRepository,
+    @inject('MusculaturesRepository')
     private musculaturesRepository: MusculaturesRepository,
   ) {}
 
@@ -43,6 +47,8 @@ export class EditExerciseUseCase {
 
       exercise.musculatureId = musculatureId
     }
+
+    await this.exercisesRepository.save(exercise)
 
     return success({})
   }

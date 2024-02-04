@@ -1,4 +1,5 @@
 import { Either, failure, success } from '@core/either'
+import { inject, injectable } from 'tsyringe'
 import { Musculature } from '@workout/enterprise/entities/musculature'
 import { MusculaturesRepository } from '../repositories/musculatures-repository'
 import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
@@ -14,8 +15,12 @@ type GetMusculatureUseCaseResponse = Either<
   }
 >
 
+@injectable()
 export class GetMusculatureUseCase {
-  constructor(private musculaturesRepository: MusculaturesRepository) {}
+  constructor(
+    @inject('MusculaturesRepository')
+    private musculaturesRepository: MusculaturesRepository,
+  ) {}
 
   async execute({
     musculatureId,

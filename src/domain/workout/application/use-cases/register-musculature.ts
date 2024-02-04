@@ -2,6 +2,7 @@ import { Either, failure, success } from '@core/either'
 import { MusculaturesRepository } from '../repositories/musculatures-repository'
 import { ResourceAlreadyExistsError } from '@core/errors/resource-already-exists-error'
 import { Musculature } from '@workout/enterprise/entities/musculature'
+import { inject, injectable } from 'tsyringe'
 
 interface RegisterMusculatureUseCaseRequest {
   name: string
@@ -12,8 +13,12 @@ type RegisterMusculatureUseCaseResponse = Either<
   object
 >
 
+@injectable()
 export class RegisterMusculatureUseCase {
-  constructor(private musculaturesRepository: MusculaturesRepository) {}
+  constructor(
+    @inject('MusculaturesRepository')
+    private musculaturesRepository: MusculaturesRepository,
+  ) {}
 
   async execute({
     name,
