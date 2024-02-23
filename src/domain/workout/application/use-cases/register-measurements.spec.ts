@@ -25,7 +25,7 @@ describe('Register measurements use case', () => {
     const result = await sut.execute({
       customerId: 'customer-01',
       bust: 80,
-      bicep: 20,
+      biceps: 20,
       forearm: 15,
       waist: 70,
       hips: 80,
@@ -41,7 +41,7 @@ describe('Register measurements use case', () => {
     const result = await sut.execute({
       customerId: 'customer-01',
       bust: 80,
-      bicep: 20,
+      biceps: 20,
       forearm: 15,
       waist: 70,
       hips: 80,

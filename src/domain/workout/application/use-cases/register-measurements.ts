@@ -8,7 +8,7 @@ import { inject, injectable } from 'tsyringe'
 interface RegisterMeasurementsUseCaseRequest {
   customerId: string
   bust: number
-  bicep: number
+  biceps: number
   forearm: number
   waist: number
   hips: number
@@ -30,7 +30,7 @@ export class RegisterMeasurementsUseCase {
   async execute({
     customerId,
     bust,
-    bicep,
+    biceps,
     forearm,
     waist,
     hips,
@@ -46,7 +46,7 @@ export class RegisterMeasurementsUseCase {
     const measurements = Measurements.create({
       customerId,
       bust,
-      bicep,
+      biceps,
       forearm,
       waist,
       hips,

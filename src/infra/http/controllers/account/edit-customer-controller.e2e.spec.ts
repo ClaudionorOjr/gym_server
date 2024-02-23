@@ -2,23 +2,18 @@ import 'reflect-metadata'
 import { PrismaService } from '@infra/database/prisma'
 import { FastifyInstance } from 'fastify'
 import { CustomerFactory } from 'test/factories/make-customer'
-import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
-import { AdminFactory } from 'test/factories/make-admin'
+import { createAuthenticateUser } from 'test/create-authenticate-user'
 import request from 'supertest'
 
 describe('Edit customer (e2e)', () => {
   let app: FastifyInstance
   let prisma: PrismaService
   let customerFactory: CustomerFactory
-  let adminFactory: AdminFactory
-  let jwtEncrypter: JwtEncrypter
 
   beforeAll(async () => {
     app = (await import('src/app')).app
     prisma = new PrismaService()
     customerFactory = new CustomerFactory(prisma)
-    adminFactory = new AdminFactory(prisma)
-    jwtEncrypter = new JwtEncrypter()
 
     await app.ready()
   })
@@ -29,9 +24,8 @@ describe('Edit customer (e2e)', () => {
 
   test('[PUT] /customer/:customerId', async () => {
     const customer = await customerFactory.makePrismaCustomer()
-    const admin = await adminFactory.makePrismaAdmin()
 
-    const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
+    const { accessToken } = await createAuthenticateUser(app, prisma)
 
     const response = await request(app.server)
       .put(`/customer/${customer.id}`)
@@ -52,7 +46,6 @@ describe('Edit customer (e2e)', () => {
       },
     })
 
-    console.log(updatedCustomer)
     expect(updatedCustomer).toBeTruthy()
   })
 })

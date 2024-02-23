@@ -22,7 +22,7 @@ export async function accountRoutes(app: FastifyInstance) {
   app.get('/customers', { onRequest: [verifyJWT] }, fetchCustomers)
 
   /* PUT */
-  app.put('/admin/:adminId', { onRequest: [verifyJWT] }, editAdmin)
+  app.put('/admin/update', { onRequest: [verifyJWT] }, editAdmin)
   app.put('/customer/:customerId', { onRequest: [verifyJWT] }, editCustomer)
   app.put('/change-password', { onRequest: [verifyJWT] }, changePassword)
   app.put('/reset-password', resetPassword)

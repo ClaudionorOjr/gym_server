@@ -47,7 +47,7 @@ export async function workoutRoutes(app: FastifyInstance) {
   app.put('/customers/workouts/:workoutId', editWorkout)
 
   /* DELETE */
-  app.delete('/customers/measurments/:measurementsId', deleteMeasurements)
+  app.delete('/customers/measurements/:measurementsId', deleteMeasurements)
   app.delete('/musculatures/:musculatureId', deleteMusculature)
   app.delete('/exercises/:exerciseId', deleteExercise)
   app.delete('/customers/workouts/:workoutId', deleteWorkout)

@@ -1,24 +1,19 @@
 import 'reflect-metadata'
-import { JwtEncrypter } from '@infra/cryptography/jwt-encrypter'
-import { PrismaService } from '@infra/database/prisma'
 import { FastifyInstance } from 'fastify'
-import { AdminFactory } from 'test/factories/make-admin'
-import request from 'supertest'
+import { PrismaService } from '@infra/database/prisma'
 import { BcryptHasher } from '@infra/cryptography/bcrypt-hasher'
+import { createAuthenticateUser } from 'test/create-authenticate-user'
+import request from 'supertest'
 
 describe('Change password (e2e)', () => {
   let app: FastifyInstance
   let prisma: PrismaService
-  let adminFactory: AdminFactory
   let bcrypterHasher: BcryptHasher
-  let jwtEncrypter: JwtEncrypter
 
   beforeAll(async () => {
     app = (await import('src/app')).app
     prisma = new PrismaService()
-    adminFactory = new AdminFactory(prisma)
     bcrypterHasher = new BcryptHasher()
-    jwtEncrypter = new JwtEncrypter()
 
     await app.ready()
   })
@@ -28,26 +23,21 @@ describe('Change password (e2e)', () => {
   })
 
   test('[PUT] /change-password', async () => {
-    const admin = await adminFactory.makePrismaAdmin({
-      passwordHash: await bcrypterHasher.hash('123456'),
+    const { accessToken } = await createAuthenticateUser(app, prisma, {
+      passwordHash: '123457',
     })
-
-    const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 
     const response = await request(app.server)
       .put('/change-password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: '123456',
+        password: '123457',
         newPassword: '654321',
       })
 
     expect(response.statusCode).toEqual(204)
 
-    const { passwordHash } = await prisma.admin.findUniqueOrThrow({
-      where: {
-        id: admin.id,
-      },
+    const { passwordHash } = await prisma.admin.findFirstOrThrow({
       select: {
         passwordHash: true,
       },

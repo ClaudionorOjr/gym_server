@@ -24,13 +24,13 @@ describe('Edit admin (e2e)', () => {
     await app.close()
   })
 
-  test('[PUT] /admin/:adminId', async () => {
+  test('[PUT] /admin/update', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const accessToken = await jwtEncrypter.encrypt({ sub: admin.id })
 
     const response = await request(app.server)
-      .put(`/admin/${admin.id}`)
+      .put(`/admin/update`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         completeName: 'John Doe',

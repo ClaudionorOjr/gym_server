@@ -1,0 +1,1657 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Gym API",
+    "description": "API for Gym",
+    "version": "0.1.0",
+    "contact": {
+      "name": "Claudionor Oliveira",
+      "email": "claudionorojr@hotmail.com",
+      "url": "https://github.com/claudionorojr"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://{{baseurl}}",
+      "description": "Localhost (uses test data)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Admin",
+      "description": "Admin related end-points"
+    },
+    {
+      "name": "Customer",
+      "description": "Customer related end-points"
+    }
+  ],
+  "paths": {
+    "/admin/register": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Register Administrator",
+        "description": "To register an administrator, you must provide your `completeName`, `email`, `password` and `phone`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["completeName", "email", "password", "phone"],
+                "type": "object",
+                "properties": {
+                  "completeName": {
+                    "type": "string",
+                    "example": "John Doe da Silva Sauro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123654"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "(00) 98765-4321"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict-User"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sessions" : {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Authentication",
+        "description": "To login, you need a valid `email` and `password`.",
+        "requestBody": {
+          "description": "Needed data to log in.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email", "password"],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123654"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "accessToken": "eyJhbGciOiJIUzI9NiIsInR5cCI6IkpXVCJ9.eyJzdWIiUiIyMjN0NTY3ODkwIiwibmGtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E5cBlb30RJHrHDcFfxjoZZgeFONFh7HgQ"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "message": "Credentials are not valid."
+                    }
+                  ]
+                }
+              }   
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customer/register": {
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Register Customer",
+        "description": "To register a customer, you must provide your `completeName`, `email`, `password`, `phone` and `birthdate`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["completeName", "email", "password", "phone", "birthdate"],
+                "type": "object",
+                "properties": {
+                  "completeName": {
+                    "type": "string",
+                    "example": "John Doe da Silva Sauro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123654"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "(00) 98765-4321"
+                  },
+                  "birthdate": {
+                    "type": "string",
+                    "format": "DD/MM/YYYY",
+                    "example": "20/01/1990"
+                  },
+                  "paymentDay": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "10"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The customer was created successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict-User"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Forgot Password",
+        "description": "To reset your password, you need pass a valid `email`.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email"],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  }
+                }
+              }
+            }  
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "List Customers",
+        "description": "Return all customers.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/update": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update Admin",
+        "description": "Update administrator properties such as `completeName`, `email` and `phone`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "completeName": {
+                    "type": "string",
+                    "example": "John Doe da Silva Sauro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "(00) 98765-4321"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customer/{customerId}": {
+      "put": {
+        "tags": ["Customer"],
+        "summary": "Update Customer",
+        "description": "Update customer properties such as `completeName`, `email`, `phone`, `birthdate` and `paymentDay`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "completeName": {
+                    "type": "string",
+                    "example": "John Doe da Silva Sauro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "(00) 98765-4321"
+                  },
+                  "birthdate": {
+                    "type": "string",
+                    "format": "DD/MM/YYYY",
+                    "example": "20/01/1990"
+                  },
+                  "paymentDay": {
+                    "type": "string",
+                    "example": "16"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customerId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customer"],
+        "summary": "Delete Customer",
+        "description": "Delete customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customerId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/change-password": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Change Password",
+        "description": "Change administrator password.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["password", "newPassword"],
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123456"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123457"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Reset Password",
+        "description": "Reset administrator password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["password"],
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "It is necessary to pass the admin ID as a parameter of the request.",
+            "schema": {
+              "type": "string",
+              "format": "JWT",
+              "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.NHVaYe26MbtOYhSKkoKYdFVomg4i8ZJd8_-RU8VNbftc4TSMb4bXP3l3YlNWACwyXPGffz5aXHc6lty1Y2t4SWRqGteragsVdZufDn5BlnJl9pdR_kdVFUsra2rWKEofkZeIC4yWytE58sMIihvo9H1ScmmVwBcQP6XETqYd0aSHp1gOa9RdUPDvoXQ5oqygTqVtxaDr6wUFKrKItgBMzWIdNZ6y7O9E0DhEPTbE9rfBo6KTFsHAZnMg4k68CDp2woYIaXbmYTWcvbzIuHO7_37GT79XdIwkm95QJ7hYC9RiwrV7mesbY4PAahERJawntho0my942XheVLmGwLMBkQ"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers/{customerId}/measurements": {
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Create Measurements",
+        "description": "Create customer measurements.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["bust", "biceps", "forearm", "waist", "hips", "thigh", "calf"],
+                "type": "object",
+                "properties": {
+                  "bust": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "80"
+                  },
+                  "biceps": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "20"
+                  },
+                  "forearm": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "15"
+                  },
+                  "waist": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "70"
+                  },
+                  "hips": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "80"
+                  },
+                  "thigh": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "40"
+                  },
+                  "calf": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "25"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customerId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Get Measurements",
+        "description": "Get customer measurements.",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "description": "It is necessary to pass the customer ID as a parameter of the request.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurements"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/musculatures/register": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Register Musculature",
+        "description": "To register a musculature, you must provide your `name`.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["name"],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Triceps"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict-Resource",
+            "example": "Resource already exists!"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/exercises/register": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Register Exercise",
+        "description": "To register an exercise, you must provide `name`. `musculatureId` and optionally `equipment`.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["name", "musculatureId"],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Leg press"
+                  },
+                  "musculatureId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+                  },
+                  "equipment": {
+                    "type": "string",
+                    "example": "Leg press machine"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict-Resource"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers/{customerId}/workout": {
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Create Workouts",
+        "description": "Create customer workout.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["exerciseId", "series", "repetitions"],
+                "type": "object",
+                "properties": {
+                  "exerciseId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+                  },
+                  "series": {
+                    "type": "number",
+                    "format": "integer",
+                    "example": "4"
+                  },
+                  "repetitions": {
+                    "type": "number",
+                    "format": "integer",
+                    "example": "12"
+                  },
+                  "weight": {
+                    "type": "number",
+                    "format": "integer",
+                    "example": "14"
+                  },
+                  "note": {
+                    "type": "string",
+                    "example": "Something to note about the exercise",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customerId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/musculatures/{musculatureId}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Musculature",
+        "description": "Get musculature by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/musculatureId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Musculature"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete Musculature",
+        "description": "Delete musculature by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/musculatureId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/exercises/{exerciseId}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Exercise",
+        "description": "Get exercise by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/exerciseId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercise"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update Exercise",
+        "description": "Update exercise by ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Leg press",
+                    "nullable": true
+                  },
+                  "musculatureId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "8bbe08e3-8008-42bd-8a6d-58572c06ad2a",
+                    "nullable": true
+                  },
+                  "equipment": {
+                    "type": "string",
+                    "example": "Leg press machine",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/exerciseId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete Exercise",
+        "description": "Delete exercise by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/exerciseId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers/measurements/{measurementsId}": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Get Measurement",
+        "description": "Get measurement by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/measurementsId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurements"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customer"],
+        "summary": "Delete Measurement",
+        "description": "Delete measurement by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/measurementsId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers/workouts/{workoutId}": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Get Workout",
+        "description": "Get workout by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workoutId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Customer"],
+        "summary": "Update Workout",
+        "description": "Update workout by ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Leg press",
+                    "nullable": true
+                  },
+                  "series": {
+                    "type": "number",
+                    "format": "integer",
+                    "nullable": true,
+                    "example": "4"
+                  },
+                  "repetitions": {
+                    "type": "number",
+                    "format": "integer",
+                    "nullable": true,
+                    "example": "12"
+                  },
+                  "weight": {
+                    "type": "number",
+                    "format": "integer",
+                    "nullable": true,
+                    "example": "10"
+                  },
+                  "note": {
+                    "type": "string",                   
+                    "nullable": true,
+                    "example": "Something about the workout."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "workoutId",
+            "in": "path",
+            "required": true,
+            "description": "It is necessary to pass the workout ID as a parameter of the request.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customer"],
+        "summary": "Delete Workout",
+        "description": "Delete workout by ID.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workoutId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/musculatures": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Musculatures",
+        "description": "Get all musculatures.",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Musculature"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/exercises": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Exercises",
+        "description": "Get all exercises.",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercise"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/customers/{customerId}/workouts": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Get Workouts",
+        "description": "Get all workouts.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Admin": {
+        "title": "Administrator",
+        "summary": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "completeName": {
+            "type": "string",
+            "example": "John Doe da Silva Sauro"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "johndoe@example.com"
+          },
+          "passwordHash": {
+            "type": "string",
+            "format": "hash",
+            "example": "$2a$12$chZ6VgRqFOWsZOuPZ54r1.Bs5WeW6QjCqOU8Q5MJL9BMwxjS6oaf6"
+          },
+          "phone": {
+            "type": "string",
+            "example": "(00) 98765-4321"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "Customer": {
+        "title": "Customer",
+        "description": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "completeName": {
+            "type": "string",
+            "example": "John Doe da Silva Sauro"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "johndoe@example.com"
+          },
+          "passwordHash": {
+            "type": "string",
+            "format": "hash",
+            "example": "$2a$12$chZ6VgRqFOWsZOuPZ54r1.Bs5WeW6QjCqOU8Q5MJL9BMwxjS6oaf6"
+          },
+          "phone": {
+            "type": "string",
+            "example": "(00) 98765-4321"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "registeredBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "8bbe08e3-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "paymentDay": {
+            "type": "string",
+            "example": "16"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "Musculature": {
+        "title": "Musculature",
+        "description": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "name": {
+            "type": "string",
+            "example": "biceps"
+          }
+        }
+      },
+      "Measurements": {
+        "title": "Measurements",
+        "description": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "bust": {
+            "type": "number",
+            "format": "float",
+            "example": "80"
+          },
+          "biceps": {
+            "type": "number",
+            "format": "float",
+            "example": "20"
+          },
+          "forearm": {
+            "type": "number",
+            "format": "float",
+            "example": "15"
+          },
+          "waist": {
+            "type": "number",
+            "format": "float",
+            "example": "70"
+          },
+          "hips": {
+            "type": "number",
+            "format": "float",
+            "example": "80"
+          },
+          "thigh": {
+            "type": "number",
+            "format": "float",
+            "example": "40"
+          },
+          "calf": {
+            "type": "number",
+            "format": "float",
+            "example": "25"
+          },
+          "measurementsTakenAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Exercise": {
+        "title": "Exercise",
+        "description": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "name": {
+            "type": "string",
+            "example": "Leg press"
+          },
+          "musculatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "equipment": {    
+            "type":"string",
+            "example":"Leg press machine",
+            "nullable": true
+          }
+        }
+      },
+      "Workout": {
+        "title": "Workout",
+        "description": "Data format in the database.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "customerId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "exerciseId": {  
+            "type":"string",
+            "format":"uuid",
+            "example":"9cbe02e4-8008-42bd-8a6d-58572c06ad2a"
+          },
+          "series": {
+            "type": "number",
+            "format": "integer",
+            "example": "4"
+          },
+          "repetitions": {
+            "type": "number",
+            "format": "integer",
+            "example": "12"
+          },
+          "weight": {
+            "type": "number",
+            "format": "integer",
+            "example": "10"
+          },
+          "note": {
+            "type": "string",
+            "example": "Something to note about the workout.",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "parameters": {
+      "customerId": {
+        "name": "customerId",
+        "in": "path",
+        "required": true,
+        "description": "It is necessary to pass the customer ID as a parameter of the request.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+        }
+      },
+      "measurementsId": {
+        "name": "measurementsId",
+        "in": "path",
+        "required": true,
+        "description": "It is necessary to pass the measurement ID as a parameter of the request.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+        }
+      },
+      "musculatureId": {
+        "name": "musculatureId",
+        "in": "path",
+        "required": true,
+        "description": "It is necessary to pass the musculature ID as a parameter of the request.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+        }
+      },
+      "exerciseId": {
+        "name": "exerciseId",
+        "in": "path",
+        "required": true,
+        "description": "It is necessary to pass the exercise ID as a parameter of the request.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+        }
+      },
+      "workoutId": {
+        "name": "workoutId",
+        "in": "path",
+        "required": true,
+        "description": "It is necessary to pass the workout ID as a parameter of the request.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5as4ds565-8008-42bd-8a6d-58572c06ad2a"
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "examples": [
+                {
+                  "message": "Unauthorized."
+                }
+              ]
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Bad request."
+                    }
+                  }
+                }
+              }
+            }
+      },
+      "ValidationError": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Validation error,"
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "errors": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Resource not found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "Conflict-User": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User already exists!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Conflict-Resource": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Resource already exists!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "examples": []
+  }
+}

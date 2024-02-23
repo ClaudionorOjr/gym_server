@@ -86,6 +86,13 @@ $ npm i @prisma/client
 $ npx prisma init
 ```
 
+- Resend
+
+```sh
+# Lib para envio de e-mails (Produção)
+$ npm i resend
+```
+
 - Supertest
 
 ```sh
@@ -93,11 +100,11 @@ $ npx prisma init
 $ npm i supertest @types/supertest -D
 ```
 
-- Resend
+- Swagger
 
 ```sh
-# Lib para envio de e-mails (Produção)
-$ npm i resend
+# Plugin do Fastify para criar documentação da API com Swagger
+$ npm i @fastify/swagger
 ```
 
 - TSyringe
@@ -167,3 +174,13 @@ $ npm i zod
 // TODO:
 
 - [ ] Refresh token
+
+## Commads
+
+```sh
+# Certifique-se de que todos os pacotes estão atualizados para versões compatíveis.
+$ npm outdated
+
+# Atualizar as dependências
+$ npm update
+```

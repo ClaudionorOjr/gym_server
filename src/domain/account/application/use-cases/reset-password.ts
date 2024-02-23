@@ -32,6 +32,7 @@ export class ResetPasswordUseCase {
 
       const admin = await this.adminsRepository.findById(adminId as string)
 
+      //! Retirar console.log
       console.log(admin)
       if (!admin) {
         return failure(new ResourceNotFoundError())
@@ -44,9 +45,6 @@ export class ResetPasswordUseCase {
       return success({})
     } catch (error) {
       return failure(error)
-
-      // const err = error as Error
-      // return failure(new TokenError(err.message))
     }
   }
 }

@@ -32,7 +32,7 @@ describe('Register measurements (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         bust: 80,
-        bicep: 20,
+        biceps: 20,
         forearm: 15,
         waist: 70,
         hips: 80,

@@ -10,7 +10,7 @@ export async function registerMeasurements(
 ) {
   const registerMeasurementsBodySchema = z.object({
     bust: z.number(),
-    bicep: z.number(),
+    biceps: z.number(),
     forearm: z.number(),
     waist: z.number(),
     hips: z.number(),
@@ -22,7 +22,7 @@ export async function registerMeasurements(
     customerId: z.string().uuid(),
   })
 
-  const { bust, bicep, forearm, waist, hips, thigh, calf } =
+  const { bust, biceps, forearm, waist, hips, thigh, calf } =
     registerMeasurementsBodySchema.parse(request.body)
   const { customerId } = registerMeasurementsParamsSchema.parse(request.params)
 
@@ -34,7 +34,7 @@ export async function registerMeasurements(
     const result = await registerMeasurementsUseCase.execute({
       customerId,
       bust,
-      bicep,
+      biceps,
       forearm,
       waist,
       hips,

@@ -4,7 +4,7 @@ import { Optional } from '@core/types/optional'
 export interface MeasurementsProps {
   customerId: string
   bust: number
-  bicep: number
+  biceps: number
   forearm: number
   waist: number
   hips: number
@@ -27,12 +27,12 @@ export class Measurements extends Entity<MeasurementsProps> {
     this.props.bust = bust
   }
 
-  get bicep() {
-    return this.props.bicep
+  get biceps() {
+    return this.props.biceps
   }
 
-  set bicep(bicep: number) {
-    this.props.bicep = bicep
+  set biceps(bicep: number) {
+    this.props.biceps = bicep
   }
 
   get forearm() {

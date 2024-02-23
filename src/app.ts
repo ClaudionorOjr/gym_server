@@ -2,11 +2,14 @@ import 'reflect-metadata'
 import '@infra/container'
 import fastify from 'fastify'
 import fastifyJwt from '@fastify/jwt'
+import fastifySwagger from '@fastify/swagger'
+import fastifyApiReference from '@scalar/fastify-api-reference'
 
 import { routes } from './infra/http/routes'
 import { env } from './infra/env'
 
 import { ZodError } from 'zod'
+import documentFile from './docs.json'
 
 export const app = fastify()
 
@@ -21,6 +24,16 @@ app.register(fastifyJwt, {
   },
   sign: {
     algorithm: 'RS256',
+  },
+})
+
+/* DOCS */
+app.register(fastifyApiReference, {
+  routePrefix: '/docs',
+  configuration: {
+    spec: {
+      content: documentFile,
+    },
   },
 })
 
@@ -44,5 +57,5 @@ app.setErrorHandler((error, _request, reply) => {
     console.error(error)
   }
 
-  return reply.status(500).send({ message: 'Internal server error' })
+  return reply.status(500).send({ message: 'Internal server error.' })
 })

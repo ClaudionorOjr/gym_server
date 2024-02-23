@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from 'tsyringe'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { z } from 'zod'
+import { ResourceNotFoundError } from '@core/errors/resource-not-found-error'
 
 export async function resetPassword(
   request: FastifyRequest,
@@ -34,8 +35,12 @@ export async function resetPassword(
     return reply.status(204).send()
   } catch (error) {
     if (error instanceof JsonWebTokenError) {
+      //! Retirar
       console.log(error)
       return reply.status(400).send({ message: error.message })
+    }
+    if (error instanceof ResourceNotFoundError) {
+      return reply.status(404).send({ message: error.message })
     }
 
     throw error
