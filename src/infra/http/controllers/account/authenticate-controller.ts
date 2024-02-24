@@ -27,8 +27,16 @@ export async function authenticate(
       throw result.value
     }
 
-    const { accessToken } = result.value
-    return reply.status(200).send({ accessToken })
+    const { accessToken, refreshToken } = result.value
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true, // Encriptado através do HTTPS
+        sameSite: true, // Só é acessível dentro do mesmo domínio,
+        httpOnly: true, // Só é acessível pelo back-end
+      })
+      .status(200)
+      .send({ accessToken })
   } catch (error) {
     if (error instanceof WrongCredentialsError) {
       return reply.status(401).send({ message: error.message })

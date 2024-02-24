@@ -14,6 +14,7 @@ type AuthenticateUseCaseResponse = Either<
   WrongCredentialsError,
   {
     accessToken: string
+    refreshToken: string
   }
 >
 
@@ -47,8 +48,16 @@ export class AuthenticateUseCase {
       return failure(new WrongCredentialsError())
     }
 
-    const accessToken = await this.encrypter.encrypt({ sub: admin.id })
+    const accessToken = await this.encrypter.encrypt({
+      sub: admin.id,
+      expiresIn: '1h',
+    })
 
-    return success({ accessToken })
+    const refreshToken = await this.encrypter.encrypt({
+      sub: admin.id,
+      expiresIn: '7d',
+    })
+
+    return success({ accessToken, refreshToken })
   }
 }

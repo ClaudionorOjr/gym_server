@@ -10,6 +10,7 @@ import { changePassword } from '../controllers/account/change-password-controlle
 import { fetchCustomers } from '../controllers/account/fetch-customers-controller'
 import { forgotPassword } from '../controllers/account/forgot-password-controller'
 import { resetPassword } from '../controllers/account/reset-password-controller'
+import { refreshToken } from '../controllers/account/refresh-token-controller'
 
 export async function accountRoutes(app: FastifyInstance) {
   /* POST */
@@ -17,6 +18,9 @@ export async function accountRoutes(app: FastifyInstance) {
   app.post('/admin/register', { onRequest: [verifyJWT] }, registerAdmin)
   app.post('/customer/register', { onRequest: [verifyJWT] }, registerCustomer)
   app.post('/forgot-password', forgotPassword)
+
+  /* PATCH */
+  app.patch('/token/refresh', refreshToken)
 
   /* GET */
   app.get('/customers', { onRequest: [verifyJWT] }, fetchCustomers)

@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import '@infra/container'
 import fastify from 'fastify'
 import fastifyJwt from '@fastify/jwt'
-import fastifySwagger from '@fastify/swagger'
+import fastifyCookie from '@fastify/cookie'
 import fastifyApiReference from '@scalar/fastify-api-reference'
 
 import { routes } from './infra/http/routes'
@@ -16,7 +16,6 @@ export const app = fastify()
 const privateKey = env.JWT_PRIVATE_KEY
 const publicKey = env.JWT_PUBLIC_KEY
 
-// TODO: terminar as configurações do JWT, como cookies, expiração...
 app.register(fastifyJwt, {
   secret: {
     private: Buffer.from(privateKey, 'base64'),
@@ -24,8 +23,15 @@ app.register(fastifyJwt, {
   },
   sign: {
     algorithm: 'RS256',
+    expiresIn: '1h',
+  },
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false, // Não é um cookie assinado
   },
 })
+
+app.register(fastifyCookie)
 
 /* DOCS */
 app.register(fastifyApiReference, {
