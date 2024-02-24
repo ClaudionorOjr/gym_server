@@ -19,6 +19,8 @@
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@rocketseat/eslint-config": "^2.1.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.6",
@@ -28,6 +30,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "prisma": "^5.7.1",
+    "semantic-release": "^23.0.2",
     "supertest": "^6.3.3",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",

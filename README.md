@@ -93,6 +93,16 @@ $ npx prisma init
 $ npm i resend
 ```
 
+- Semantic-release
+
+```sh
+# Instalação da dependência
+$ npm i semantic-release -D
+
+# Plugins adicionais
+$ npm i @semantic-release/git @semantic-release/changelog -D
+```
+
 - Supertest
 
 ```sh
@@ -170,10 +180,6 @@ $ npm i vite-tsconfig-paths -D
 ```sh
 $ npm i zod
 ```
-
-// TODO:
-
-- [ ] Refresh token
 
 ## Commads
 

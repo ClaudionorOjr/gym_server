@@ -15,7 +15,7 @@ export class PrismaMeasurementsMapper {
       id: measurements.id,
       customerId: measurements.customerId,
       bust: measurements.bust,
-      bicep: measurements.bicep,
+      bicep: measurements.biceps,
       forearm: measurements.forearm,
       waist: measurements.waist,
       hips: measurements.hips,
@@ -36,7 +36,7 @@ export class PrismaMeasurementsMapper {
       {
         customerId: raw.customerId,
         bust: Number(raw.bust),
-        bicep: Number(raw.bicep),
+        biceps: Number(raw.bicep),
         forearm: Number(raw.forearm),
         waist: Number(raw.waist),
         hips: Number(raw.hips),

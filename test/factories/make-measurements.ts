@@ -14,7 +14,7 @@ export function makeMeasurements(
     {
       customerId: randomUUID(),
       bust: 80,
-      bicep: 20,
+      biceps: 20,
       forearm: 15,
       waist: 70,
       hips: 80,

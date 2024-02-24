@@ -44,7 +44,6 @@ describe('Edit admin (e2e)', () => {
       where: { id: admin.id },
     })
 
-    console.log(updatedAdmin)
     expect(updatedAdmin).toBeTruthy()
   })
 })

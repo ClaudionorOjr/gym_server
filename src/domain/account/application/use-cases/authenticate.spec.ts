@@ -34,8 +34,9 @@ describe('Authenticate use case', () => {
     })
 
     expect(result.isSuccess()).toBe(true)
-    expect(result.value).toEqual({
+    expect(result.value).toMatchObject({
       accessToken: expect.any(String),
+      refreshToken: expect.any(String),
     })
   })
 
