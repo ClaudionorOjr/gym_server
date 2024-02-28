@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -63,17 +63,12 @@ jobs:
           --health-timeout 5s
           --health-retries 3
 
-    strategy:
-      fail-fast: false
-      matrix:
-        retry: [1, 2, 3]
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -99,13 +94,6 @@ jobs:
           MAIL_API_KEY: ${{ secrets.MAIL_API_KEY }}
           MAIL_FROM: ''
           MAIL_URL_FORGOT_PASSWORD: 'http://localhost:3000/reset-password'
-
-      - name: Check if tests failed and retry service if necessary
-        if: failure()
-        run: |
-          echo "Retrying PostgreSQL service..."
-          sleep 10
-          exit 1
 
   notify-release:
     name: Notify Release
