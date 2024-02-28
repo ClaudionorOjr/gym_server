@@ -115,6 +115,8 @@ $ npm i supertest @types/supertest -D
 ```sh
 # Plugin do Fastify para criar documentação da API com Swagger
 $ npm i @fastify/swagger
+
+$ npm i @scalar/fastify-api-reference
 ```
 
 - TSyringe
