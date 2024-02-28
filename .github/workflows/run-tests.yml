@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - alpha
-env:
-  MAIL_URL_FORGOT_PASSWORD: 'http://localhost:3000/reset-password'
 
 jobs:
   unit-tests:
@@ -33,6 +31,16 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+        env:
+          DATABASE_URL: 'postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}'
+          DATABASE_USER: ${{ secrets.POSTGRES_USER }}
+          DATABASE_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DATABASE_DB: ${{ secrets.POSTGRES_DB }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          MAIL_API_KEY: ${{ secrets.MAIL_API_KEY }}
+          MAIL_FROM: ''
+          MAIL_URL_FORGOT_PASSWORD: 'http://localhost:3000/reset-password'
 
   e2e-tests:
     name: E2E Tests
@@ -53,7 +61,12 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        retry: [1, 2, 3]
 
     steps:
       - name: Checkout code
@@ -78,9 +91,21 @@ jobs:
         run: npm run test:e2e
         env:
           DATABASE_URL: 'postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}'
+          DATABASE_USER: ${{ secrets.POSTGRES_USER }}
+          DATABASE_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DATABASE_DB: ${{ secrets.POSTGRES_DB }}
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
           MAIL_API_KEY: ${{ secrets.MAIL_API_KEY }}
+          MAIL_FROM: ''
+          MAIL_URL_FORGOT_PASSWORD: 'http://localhost:3000/reset-password'
+
+      - name: Check if tests failed and retry service if necessary
+        if: failure()
+        run: |
+          echo "Retrying PostgreSQL service..."
+          sleep 10
+          exit 1
 
   notify-release:
     name: Notify Release
