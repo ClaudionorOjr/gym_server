@@ -1,5 +1,5 @@
-import { MeasurementsRepository } from 'src/domain/training/application/repositories/measurements-repository'
-import { Measurements } from 'src/domain/training/enterprise/entities/measurements'
+import { MeasurementsRepository } from 'src/domain/workout/application/repositories/measurements-repository'
+import { Measurements } from 'src/domain/workout/enterprise/entities/measurements'
 
 export class InMemoryMeasurementsRepository implements MeasurementsRepository {
   public measurements: Measurements[] = []
